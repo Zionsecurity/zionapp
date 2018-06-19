@@ -1,0 +1,99 @@
+extends layout
+
+block scripts
+    script(src='/scripts/ckeditor/ckeditor.js')
+
+block content
+    div
+        form#alert-form(method='post' action='')
+            div.input-field
+                label(for='title') Title:
+                input#title(type='text', name='title', value=alert.title, disabled)
+            div
+                label(for='content') Content:
+                div#content!= alert.content
+            div
+                label(for='tags') Tags:
+                div#tags.chips-autocomplete(name='tags')
+                    i.material-icons.close
+    div.row
+        button#editbtn.btn.col Edit
+        form.col(method='post' action='/alerts/publish/' + alert.id)
+            button.btn(type='submit') Publish
+        a.col(href='/alerts')
+            button.btn Back
+    div
+        if error
+            p=error
+
+    script(type='text/javascript').
+        var editor = CKEDITOR.instances['editor'];
+        var tags;
+        const alertTitle = !{JSON.stringify(alert.title)};
+        const alertId = !{JSON.stringify(alert.id)};
+        const initialTags = !{JSON.stringify(tags)};
+
+        $.getJSON( "/tags", function(_tags) {
+                tags = _tags;
+                var autocompleteTags = {}
+                Object.keys(tags).forEach(function(tag) {
+                    autocompleteTags[tag] = null;
+                }, {});
+                $('#tags').material_chip({
+                    data: initialTags.map(function(t) {
+                        return {tag: t}
+                    }),
+                    autocompleteOptions: {
+                        data: autocompleteTags,
+                        limit: Infinity,
+                        minLength: 0
+                    }
+                });
+                $('#tags > .input').prop('disabled', true);
+                $('#tags i').hide();
+
+        });
+
+        editAlert = function() {
+            $('#editbtn').text('Save');
+            $('#title').prop('disabled', false);
+            $('#tags > .input').prop('disabled', false);
+            $('#tags i').show();
+
+            var textarea = $("<textarea id='editor'/>");
+            textarea.val($('#content').html());
+            $('#content').empty();
+            $('#content').replaceWith(textarea)
+            CKEDITOR.replace('editor', {
+                filebrowserUploadUrl: '/upload'
+            });
+            $(this).one('click', saveAlert);
+        }
+        saveAlert = function() {
+            $('#editbtn').text('Edit');
+            $('#title').prop('disabled', true);
+            $('#tags > .input').prop('disabled', true);
+            $('#tags i').hide();
+
+            var editor = CKEDITOR.instances['editor']
+            var content = $("<div id='content'/>");
+            content.append(editor.getData());
+            editor.destroy();
+            $('#editor').replaceWith(content);
+            var selectedTags = $('#tags').material_chip('data').map(function(tag) {
+                return tags[tag.tag];
+            })
+            $.ajax({
+                type: 'POST',
+                url: '/alerts/' + alertId,
+                data: {
+                    'title': $('#title').val(),
+                    'content': content.prop('innerHTML'),
+                    'tags': JSON.stringify(selectedTags)
+                }
+            });
+            $(this).one('click', editAlert);
+
+        }
+        $('#editbtn').one('click', editAlert);
+

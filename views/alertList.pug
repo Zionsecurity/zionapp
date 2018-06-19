@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  div
+    table
+      thead
+        tr
+          th Name
+          th Date
+          th Published
+      tbody
+        each alert in alerts
+          tr
+            td
+              a(href='/alerts/' + alert.id)= alert.title
+            td
+              p= alert.date
+            td
+              if alert.published
+                i.material-icons.green-text= 'check'
+              else
+                i.material-icons.red-text= 'clear'
+
+
+  div
+    a(href='/alerts/create')
+      button.btn.btn-primary(type='submit') New Alert

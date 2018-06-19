@@ -1,0 +1,61 @@
+extends layout
+
+block scripts
+    script(src='/scripts/ckeditor/ckeditor.js')
+
+block content
+    div
+        form#alert-form(method='post' action='')
+            div
+                label(for='title') Title:
+                input#title(type='text', name='title')
+            div
+                label(for='content') Content:
+                textarea#editor(name='content')
+            div
+                label(for='tags') Tags:
+                div.chips-autocomplete(name='tags')
+                    i.material-icons.close
+            button.btn.btn-primary(type='submit') Save Alert
+
+        a(href='/alerts')
+            button.btn Back
+
+    div
+        if errors
+            ul
+                for error in errors
+                    li= error.msg
+
+    script(type='text/javascript').
+        $(document).ready(function(){
+            var tags;
+            CKEDITOR.replace('editor', {
+                filebrowserUploadUrl: '/upload'
+            });
+            $.getJSON( "/tags", function(_tags) {
+                tags = _tags;
+                var autocompleteTags = {}
+                Object.keys(tags).forEach(function(tag) {
+                    autocompleteTags[tag] = null;
+                }, {});
+                $('.chips-autocomplete').material_chip({
+                    placeholder: 'Please specify some tags',
+                    autocompleteOptions: {
+                        data: autocompleteTags,
+                        limit: Infinity,
+                        minLength: 0
+                    }
+                });
+            });
+            $("#alert-form").submit( function(eventObj) {
+            var selectedTags = $('.chips-autocomplete').material_chip('data').map(function(tag) {
+                return tags[tag.tag];
+            })
+            $('<input />').attr('type', 'hidden')
+                .attr('name', "tags")
+                .attr('value', JSON.stringify(selectedTags))
+                .appendTo('#alert-form');
+            return true;
+            });
+        })
