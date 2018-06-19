@@ -3,8 +3,8 @@ var config = {};
 
 config.server = {
     //host: '192.168.1.37', //'192.168.30.34',
-	host: '127.0.0.1',//NOTE: temporary for development
-    port: process.env.PORT || 8080,//NOTE was 3000
+    host: 'zionalert.azurewebsites.net',//NOTE: temporary for development
+    port: process.env.PORT || 3000,
     key: __dirname + '/ssl/key.pem',
     cert: __dirname + '/ssl/cert.pem',
     passphrase: 'zionsecurity'
