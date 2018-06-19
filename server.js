@@ -14,8 +14,9 @@ var sslOptions = {
 //var server = https.createServer(sslOptions, app);
 var server = http.createServer(app);
 
+var port = process.env.PORT || 3000;
 
 // start server
-server.listen(serverOptions.port, serverOptions.host, function() {
+server.listen(port, serverOptions.host, function() {
     console.log("Zion server listening on port " + serverOptions.port);
 });
