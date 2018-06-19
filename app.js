@@ -36,13 +36,16 @@ const mongoenv = {
 	port: '10255'
 }
 
-const mongoDB = 'mongodb://${mongoenv.dbName}:${mongoenv.key}@${mongoenv.dbName}.documents.azure.com:${mongoenv.port}/?ssl=true&replicaSet=globaldb'
+//const mongoDB = 'mongodb://${mongoenv.dbName}:${mongoenv.key}@${mongoenv.dbName}.documents.azure.com:${mongoenv.port}/?ssl=true'
+const mongoDB = 'mongodb://zionapp:hdoVSceccloEdi9UWzfkCKtVddGE3OFpA0Nbcmb1MGmUMGodOTINFPe6XlsGmiUabCjhLeEjXvBobT7VbD3U2w==@zionapp.documents.azure.com:10255/?ssl=true&replicaSet=globaldb'
 //'mongodb://zionapp:hdoVSceccloEdi9UWzfkCKtVddGE3OFpA0Nbcmb1MGmUMGodOTINFPe6XlsGmiUabCjhLeEjXvBobT7VbD3U2w==@zionapp.documents.azure.com:10255/?ssl=true&replicaSet=globaldb'
 
-var db = mongoose.connect(mongoDB, {useMongoClient: true}).connection;
 
 
-//var mongoDB = `mongodb://${mongo.host}:${mongo.port}/${mongo.db}`;
+var db = mongoose.connect(mongoDB).connection;
+
+
+
 //END TO DO:-------------------------------------------------------------------------
 
 
