@@ -42,7 +42,7 @@ const mongoDB = 'mongodb://${mongoenv.dbName}:${mongoenv.key}@${mongoenv.dbName}
 var db = mongoose.connect(mongoDB, {useMongoClient: true}).connection;
 
 
-var mongoDB = `mongodb://${mongo.host}:${mongo.port}/${mongo.db}`;
+//var mongoDB = `mongodb://${mongo.host}:${mongo.port}/${mongo.db}`;
 //END TO DO:-------------------------------------------------------------------------
 
 
