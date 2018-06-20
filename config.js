@@ -3,17 +3,18 @@ var config = {};
 
 config.server = {
     //host: '192.168.1.37', //'192.168.30.34',
-    host: 'zionalert.azurewebsites.net',//NOTE: temporary for development
-    port: process.env.PORT || 3000,
+	host: '127.0.0.1',//NOTE: temporary for development
+    port: process.env.PORT || 8080,//NOTE was 3000
     key: __dirname + '/ssl/key.pem',
     cert: __dirname + '/ssl/cert.pem',
     passphrase: 'zionsecurity'
 }
 
 config.mongodb = {
-    host: '127.0.0.1',
-    port: 27017,
-    db: 'zionapp'
+    dbName: 'zionapp',
+	key: 'hdoVSceccloEdi9UWzfkCKtVddGE3OFpA0Nbcmb1MGmUMGodOTINFPe6XlsGmiUabCjhLeEjXvBobT7VbD3U2w==',
+	port: '10255',	
+	URI: 'mongodb://zionapp:hdoVSceccloEdi9UWzfkCKtVddGE3OFpA0Nbcmb1MGmUMGodOTINFPe6XlsGmiUabCjhLeEjXvBobT7VbD3U2w==@zionapp.documents.azure.com:10255/?ssl=true&replicaSet=globaldb'
 }
 
 config.mailer = {
